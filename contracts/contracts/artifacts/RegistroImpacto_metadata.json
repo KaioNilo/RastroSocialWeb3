@@ -1,0 +1,828 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					}
+				],
+				"name": "AutorizadoAdicionado",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "autor",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tipoAcaoId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "pontos",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "participantes",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"name": "EventoRegistrado",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "nome",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "pontos",
+						"type": "uint256"
+					}
+				],
+				"name": "NovoTipoAcaoAdicionado",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "ano",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "trimestre",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "totalPontos",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "totalEventos",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "hashRelatorio",
+						"type": "bytes32"
+					}
+				],
+				"name": "RelatorioGerado",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "novo",
+						"type": "address"
+					}
+				],
+				"name": "adicionarAutorizado",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "nome",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "pontos",
+						"type": "uint256"
+					}
+				],
+				"name": "adicionarTipo",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tipoId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "novosPontos",
+						"type": "uint256"
+					}
+				],
+				"name": "atualizarPontos",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "autorizados",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "ano",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "trimestre",
+						"type": "uint256"
+					}
+				],
+				"name": "calcularPontosPorTipo",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "ids",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "pontos",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "nomes",
+						"type": "string[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "ano",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "trimestre",
+						"type": "uint256"
+					}
+				],
+				"name": "consultarRelatorioTrimestral",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalPontos",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalEventos",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "pontosPorTipo",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "geradoPor",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "hashRelatorio",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "contadorEventos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "dono",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "eventos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "autor",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tipoAcaoId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "latitude",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "longitude",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "hashEvidencia",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "participantes",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "pontos",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "eventosPorTrimestre",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "ano",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "trimestre",
+						"type": "uint256"
+					}
+				],
+				"name": "gerarRelatorioTrimestral",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					}
+				],
+				"name": "isAutorizado",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "obterEvento",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "autor",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tipoAcaoId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "latitude",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "longitude",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "hashEvidencia",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "participantes",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "pontos",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct RegistroImpacto.EventoImpacto",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "inicio",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "fim",
+						"type": "uint256"
+					}
+				],
+				"name": "obterEventosPorPeriodo",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "ids",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "obterTiposAtivos",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "ids",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "nomes",
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "pontos",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "obtertotalEventos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "pontosPorTipoNoRelatorio",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "pontosPorTrimestre",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "proximoIdTipoAcao",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tipoAcaoId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "latitude",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "longitude",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "hashEvidencia",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "participantes",
+						"type": "uint256"
+					}
+				],
+				"name": "registrarImpacto",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "relatorioGerado",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "relatorios",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalPontos",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalEventos",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "geradoPor",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "hashRelatorio",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					}
+				],
+				"name": "removerAutorizado",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "tiposAcao",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "nome",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "pontos",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "ativo",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "tiposAcaoAtivos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"RegistroImpacto.sol": "RegistroImpacto"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"RegistroImpacto.sol": {
+			"keccak256": "0xf9ac50688a519674e9585eee9e2d87dc5635db4214c45b0b2d522ae6008bbc9d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4f45c49c4137b300eb91b59f18626793da00a9ae87de4eede79006ad3db755e8",
+				"dweb:/ipfs/QmXriW1Rp2H3m8HUNxza9tMW9zYMrMHj1a76DnY7W8EQyi"
+			]
+		},
+		"libraries/BokkyPooBahsDateTimeLibrary.sol": {
+			"keccak256": "0xd8dd2fb707fdd435f8335add9d1891eb2c9d7f501672ff4ee82b2f152cdfeeeb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f374b9806f048ff28712624c0be02b29a0b72368ff76085f025e5aca6d19c38e",
+				"dweb:/ipfs/QmPTjZD7sT4BbsjT3JsWokmhrrpVMURGCt9pfEABYunuDo"
+			]
+		}
+	},
+	"version": 1
+}

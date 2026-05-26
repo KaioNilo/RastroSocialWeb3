@@ -1,0 +1,45 @@
+{
+  "name": "impact-ledger-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for Terramar Impact Ledger",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:sepolia": "hardhat run scripts/deploy.ts --network sepolia",
+    "deploy:polygon": "hardhat run scripts/deploy.ts --network polygonAmoy",
+    "node": "hardhat node",
+    "clean": "hardhat clean",
+    "verify": "hardhat verify"
+  },
+  "keywords": [
+    "blockchain",
+    "impact",
+    "ong",
+    "ethereum"
+  ],
+  "author": "Instituto Terramar",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@typechain/ethers-v6": "^0.5.0",
+    "@typechain/hardhat": "^9.0.0",
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.17.0",
+    "chai": "^4.5.0",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.4",
+    "hardhat": "^2.22.16",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solidity-coverage": "^0.8.12",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.6.1"
+  }
+}
