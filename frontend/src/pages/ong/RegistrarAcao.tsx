@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BrowserProvider, ethers } from 'ethers';
+import { BrowserProvider } from 'ethers';
 import { getContract } from '../../services/contrato';
 import { TIPOS_ACAO } from '../../constants/tiposAcao';
 
@@ -26,31 +26,15 @@ const RegistrarAcao = () => {
 
     try {
       if (!window.ethereum) {
-        alert('MetaMask não instalado! Instale em https://metamask.io');
+        alert('MetaMask não instalado!');
         return;
       }
 
-      // Criar provider usando BrowserProvider
       const provider = new BrowserProvider(window.ethereum);
-      
-      // Solicitar conexão com a conta
       await provider.send('eth_requestAccounts', []);
-      
-      // Obter o signer
       const signer = await provider.getSigner();
-      
-      // Obter o contrato
       const contrato = await getContract(signer);
 
-      console.log('Registrando ação:', {
-        tipo: formData.tipoAcaoId,
-        lat: formData.latitude,
-        lng: formData.longitude,
-        hash: formData.hashEvidencia || `QmTest${Date.now()}`,
-        participantes: Number(formData.participantes)
-      });
-
-      // Registrar a ação
       const tx = await contrato.registrarImpacto(
         Number(formData.tipoAcaoId),
         formData.latitude,
@@ -59,25 +43,19 @@ const RegistrarAcao = () => {
         Number(formData.participantes)
       );
 
-      console.log('Transação enviada:', tx.hash);
-      
-      // Aguardar confirmação
       await tx.wait();
-      
       alert('✅ Ação registrada com sucesso!');
       navigate('/ong');
 
     } catch (error: any) {
-      console.error('Erro detalhado ao registrar:', error);
+      console.error('Erro ao registrar:', error);
       
-      if (error.code === 'ACTION_REJECTED' || error.message?.includes('user rejected')) {
+      if (error.message?.includes('user rejected')) {
         alert('❌ Transação rejeitada. Você cancelou a operação.');
       } else if (error.message?.includes('insufficient funds')) {
-        alert('❌ Saldo insuficiente para pagar o gas. Você precisa de ETH na Sepolia.');
-      } else if (error.message?.includes('network')) {
-        alert('❌ Erro de rede. Verifique se você está na rede Sepolia.');
+        alert('❌ Saldo insuficiente para pagar o gas.');
       } else {
-        alert(`❌ Erro ao registrar ação: ${error.message?.substring(0, 100) || 'Tente novamente'}`);
+        alert('❌ Erro ao registrar ação. Tente novamente.');
       }
     } finally {
       setCarregando(false);
@@ -87,7 +65,6 @@ const RegistrarAcao = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-2xl">
-        {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => navigate('/ong')}
@@ -99,9 +76,7 @@ const RegistrarAcao = () => {
           <p className="text-gray-600">Preencha os dados da ação de impacto.</p>
         </div>
 
-        {/* Formulário */}
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-md p-6">
-          {/* Tipo de ação */}
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">Tipo de ação *</label>
             <select
@@ -119,7 +94,6 @@ const RegistrarAcao = () => {
             </select>
           </div>
 
-          {/* Local (coordenadas) */}
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">Local (coordenadas) *</label>
             <div className="grid grid-cols-2 gap-4">
@@ -147,7 +121,6 @@ const RegistrarAcao = () => {
             </p>
           </div>
 
-          {/* Participantes */}
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">Número de participantes</label>
             <input
@@ -161,7 +134,6 @@ const RegistrarAcao = () => {
             />
           </div>
 
-          {/* Evidência (IPFS) */}
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">Upload de evidência</label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition">
@@ -181,11 +153,10 @@ const RegistrarAcao = () => {
             </p>
           </div>
 
-          {/* Botão enviar */}
           <button
             type="submit"
             disabled={carregando}
-            className="w-full bg-[#6C48DB] text-white py-3 rounded-lg font-semibold hover:bg-[#02E057] transition disabled:opacity-50"
+            className="w-full bg-[#6C48DB] text-white py-3 rounded-lg font-semibold hover:bg-[#2322E3] transition disabled:opacity-50"
           >
             {carregando ? 'Registrando...' : 'Registrar ação'}
           </button>

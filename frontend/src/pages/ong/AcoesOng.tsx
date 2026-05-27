@@ -140,6 +140,9 @@ const AcoesOng = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventosOrdenados.map((evento, index) => {
               const tipoInfo = TIPOS_ACAO[evento.tipoAcaoId as keyof typeof TIPOS_ACAO];
+              const linkIPFS = `https://gateway.pinata.cloud/ipfs/${evento.hashEvidencia}`;
+              const linkTx = `https://sepolia.etherscan.io/tx/${evento.txHash}`;
+              
               return (
                 <CardAcao
                   key={index}
@@ -147,9 +150,10 @@ const AcoesOng = () => {
                   pontos={evento.pontos}
                   local={`${evento.latitude || 'Coordenada'}, ${evento.longitude || 'não informada'}`}
                   data={formatarData(evento.timestamp)}
-                  hash={`${evento.hashEvidencia.substring(0, 10)}...`}
                   icone={tipoInfo?.icone || "📌"}
                   cor={tipoInfo?.cor || "bg-gray-500"}
+                  linkEvidencia={linkIPFS}
+                  linkTx={linkTx}
                 />
               );
             })}

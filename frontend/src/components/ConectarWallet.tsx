@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 declare global {
   interface Window {
@@ -23,14 +23,15 @@ const ConectarWallet = () => {
 
     setConectando(true);
     try {
-      const provider = new (window as any).ethereum();
-      await provider.request({ method: 'eth_requestAccounts' });
-      const accounts = await provider.request({ method: 'eth_accounts' });
+      const accounts = await window.ethereum.request({ 
+        method: 'eth_requestAccounts' 
+      });
       if (accounts.length > 0) {
         setEndereco(accounts[0]);
       }
     } catch (error) {
       console.error('Erro ao conectar:', error);
+      alert('Erro ao conectar com MetaMask. Tente novamente.');
     } finally {
       setConectando(false);
     }
@@ -40,7 +41,7 @@ const ConectarWallet = () => {
     <button
       onClick={handleConectar}
       disabled={conectando}
-      className="bg-[#00C04A] text-white px-4 py-2 rounded-lg hover:bg-[#0F7B38] transition flex items-center space-x-2 disabled:opacity-50"
+      className="bg-white text-[#6C48DB] px-4 py-2 rounded-lg hover:bg-gray-100 transition flex items-center space-x-2 disabled:opacity-50 font-medium"
     >
       <span className="text-lg">🦊</span>
       <span>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ethers, EventLog } from 'ethers';
+import { EventLog } from 'ethers';
 import CardAcao from '../../components/CardAcao';
 import { getContractReadOnly } from '../../services/contrato';
 import { TIPOS_ACAO } from '../../constants/tiposAcao';
@@ -34,7 +34,6 @@ const AcoesPage = () => {
         const eventosTemp: EventoCompleto[] = [];
         
         for (const log of logs) {
-          // Verificar se é um EventLog (tem args)
           if (!('args' in log)) continue;
           
           const eventLog = log as EventLog;
@@ -142,7 +141,6 @@ const AcoesPage = () => {
                   pontos={evento.pontos}
                   local={`${evento.latitude || 'Coordenada'}, ${evento.longitude || 'não informada'}`}
                   data={formatarData(evento.timestamp)}
-                  hash={`${evento.hashEvidencia.substring(0, 10)}...`}
                   icone={tipoInfo?.icone || "📌"}
                   cor={tipoInfo?.cor || "bg-gray-500"}
                   linkEvidencia={linkIPFS}

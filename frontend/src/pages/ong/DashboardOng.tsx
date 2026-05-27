@@ -104,7 +104,7 @@ const DashboardOng = () => {
   const eventosRecentes = eventos.slice(0, 6);
 
   const estatisticasCards = [
-    { titulo: "Ações Executadas", valor: estatisticas.totalEventos, icone: "🤝", cor: "bg-green-600" },
+    { titulo: "Ações Executadas", valor: estatisticas.totalEventos, icone: "🌱", cor: "bg-green-600" },
     { titulo: "Territórios Ativos", valor: estatisticas.territoriosAtivos, icone: "🗺️", cor: "bg-orange-500" },
     { titulo: "Evidências Materiais", valor: estatisticas.evidencias, icone: "📎", cor: "bg-purple-600" },
     { titulo: "Pontuação Total", valor: estatisticas.totalPontos, icone: "⭐", cor: "bg-blue-600" },
@@ -145,6 +145,9 @@ const DashboardOng = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {eventosRecentes.map((evento, index) => {
                 const tipoInfo = TIPOS_ACAO[evento.tipoAcaoId as keyof typeof TIPOS_ACAO];
+                const linkIPFS = `https://gateway.pinata.cloud/ipfs/${evento.hashEvidencia}`;
+                const linkTx = `https://sepolia.etherscan.io/tx/${evento.txHash}`;
+                
                 return (
                   <CardAcao
                     key={index}
@@ -152,9 +155,10 @@ const DashboardOng = () => {
                     pontos={evento.pontos}
                     local={`${evento.latitude || 'Coordenada'}, ${evento.longitude || 'não informada'}`}
                     data={formatarData(evento.timestamp)}
-                    hash={`${evento.hashEvidencia.substring(0, 10)}...`}
                     icone={tipoInfo?.icone || "📌"}
                     cor={tipoInfo?.cor || "bg-gray-500"}
+                    linkEvidencia={linkIPFS}
+                    linkTx={linkTx}
                   />
                 );
               })}

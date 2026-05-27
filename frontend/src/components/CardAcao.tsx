@@ -3,14 +3,13 @@ interface CardAcaoProps {
   pontos: number;
   local: string;
   data: string;
-  hash: string;
   icone: string;
   cor: string;
   linkEvidencia?: string;
   linkTx?: string;
 }
 
-const CardAcao = ({ tipo, pontos, local, data, hash, icone, cor, linkEvidencia, linkTx }: CardAcaoProps) => {
+const CardAcao = ({ tipo, pontos, local, data, icone, cor, linkEvidencia, linkTx }: CardAcaoProps) => {
   return (
     <div className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition border border-gray-100">
       <div className="flex justify-between items-start mb-3">

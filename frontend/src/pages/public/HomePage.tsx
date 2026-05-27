@@ -4,8 +4,9 @@ import EstatisticasCard from '../../components/EstatisticasCard';
 import CardAcao from '../../components/CardAcao';
 import { getContractReadOnly } from '../../services/contrato';
 import { TIPOS_ACAO } from '../../constants/tiposAcao';
+import { EventLog } from 'ethers';
 
-interface Evento {
+interface EventoCompleto {
   id: string;
   tipoAcaoId: number;
   pontos: number;
@@ -15,10 +16,11 @@ interface Evento {
   participantes: number;
   timestamp: number;
   autor: string;
+  txHash: string;
 }
 
 const HomePage = () => {
-  const [eventos, setEventos] = useState<Evento[]>([]);
+  const [eventos, setEventos] = useState<EventoCompleto[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [estatisticasReais, setEstatisticasReais] = useState({
     totalEventos: 0,
@@ -27,84 +29,82 @@ const HomePage = () => {
     evidencias: 0
   });
 
-  // Buscar dados do contrato
   useEffect(() => {
     const carregarDados = async () => {
       try {
         setCarregando(true);
         const contrato = getContractReadOnly();
-        
-        // Buscar total de eventos
-        const total = await contrato.obtertotalEventos();
-        const totalEventos = Number(total);
-        
-        // Buscar detalhes de cada evento
-        const eventosTemp: Evento[] = [];
+
+        const filter = contrato.filters.EventoRegistrado();
+        const logs = await contrato.queryFilter(filter);
+
+        const eventosTemp: EventoCompleto[] = [];
         let totalPontos = 0;
         const territoriosSet = new Set<string>();
-        
-        for (let i = 1; i <= totalEventos; i++) {
+
+        for (const log of logs) {
+          if (!('args' in log)) continue;
+          const eventLog = log as EventLog;
+          const txHash = eventLog.transactionHash;
+          const id = Number(eventLog.args?.[0]);
+
           try {
-            const evento = await contrato.obterEvento(i);
-            const eventoData: Evento = {
+            const evento = await contrato.obterEvento(id);
+            const pontos = Number(evento.pontos);
+
+            eventosTemp.push({
               id: evento.id.toString(),
               tipoAcaoId: Number(evento.tipoAcaoId),
-              pontos: Number(evento.pontos),
+              pontos: pontos,
               latitude: evento.latitude,
               longitude: evento.longitude,
               hashEvidencia: evento.hashEvidencia,
               participantes: Number(evento.participantes),
               timestamp: Number(evento.timestamp),
-              autor: evento.autor
-            };
-            
-            eventosTemp.push(eventoData);
-            totalPontos += eventoData.pontos;
-            
-            // Adicionar território (baseado nas coordenadas simplificadas)
-            if (eventoData.latitude && eventoData.longitude) {
-              const territorioKey = `${eventoData.latitude.substring(0, 5)}_${eventoData.longitude.substring(0, 5)}`;
+              autor: evento.autor,
+              txHash: txHash
+            });
+
+            totalPontos += pontos;
+
+            if (evento.latitude && evento.longitude) {
+              const territorioKey = `${evento.latitude.substring(0, 5)}_${evento.longitude.substring(0, 5)}`;
               territoriosSet.add(territorioKey);
             }
           } catch (error) {
-            console.error(`Erro ao buscar evento ${i}:`, error);
+            console.error(`Erro ao buscar evento ${id}:`, error);
           }
         }
-        
-        // Ordenar por timestamp (mais recente primeiro)
+
         eventosTemp.sort((a, b) => b.timestamp - a.timestamp);
-        
         setEventos(eventosTemp);
         setEstatisticasReais({
-          totalEventos,
+          totalEventos: eventosTemp.length,
           totalPontos,
           territoriosAtivos: territoriosSet.size,
           evidencias: eventosTemp.filter(e => e.hashEvidencia && e.hashEvidencia.length > 0).length
         });
-        
+
       } catch (error) {
         console.error('Erro ao carregar dados:', error);
       } finally {
         setCarregando(false);
       }
     };
-    
+
     carregarDados();
   }, []);
 
-  // Formatar data
   const formatarData = (timestamp: number) => {
     if (!timestamp) return 'Data não disponível';
     const data = new Date(timestamp * 1000);
     return data.toLocaleDateString('pt-BR');
   };
 
-  // Pegar últimos 6 eventos para exibir
   const eventosRecentes = eventos.slice(0, 6);
 
-  // Preparar dados para os cards de estatística
   const estatisticasCards = [
-    { titulo: "Ações Executadas", valor: estatisticasReais.totalEventos, icone: "🤝", cor: "bg-green-600" },
+    { titulo: "Ações Executadas", valor: estatisticasReais.totalEventos, icone: "🌱", cor: "bg-green-600" },
     { titulo: "Territórios Ativos", valor: estatisticasReais.territoriosAtivos, icone: "🗺️", cor: "bg-orange-500" },
     { titulo: "Evidências Materiais", valor: estatisticasReais.evidencias, icone: "📎", cor: "bg-purple-600" },
     { titulo: "Pontuação Total", valor: estatisticasReais.totalPontos, icone: "⭐", cor: "bg-blue-600" },
@@ -112,7 +112,6 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <section className="bg-[#9A67FF] text-white py-10">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-3xl font-bold mb-4">Transparência que gera impacto!</h2>
@@ -122,7 +121,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Estatísticas */}
       <section className="container mx-auto px-4 py-12">
         {carregando ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -139,7 +137,6 @@ const HomePage = () => {
         )}
       </section>
 
-      {/* Ações Recentes */}
       <section className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Ações recentes</h2>
@@ -158,6 +155,9 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventosRecentes.map((evento, index) => {
               const tipoInfo = TIPOS_ACAO[evento.tipoAcaoId as keyof typeof TIPOS_ACAO];
+              const linkIPFS = `https://gateway.pinata.cloud/ipfs/${evento.hashEvidencia}`;
+              const linkTx = `https://sepolia.etherscan.io/tx/${evento.txHash}`;
+              
               return (
                 <CardAcao
                   key={index}
@@ -165,22 +165,22 @@ const HomePage = () => {
                   pontos={evento.pontos}
                   local={`${evento.latitude || 'Coordenada'}, ${evento.longitude || 'não informada'}`}
                   data={formatarData(evento.timestamp)}
-                  hash={`${evento.hashEvidencia.substring(0, 10)}...`}
                   icone={tipoInfo?.icone || "📌"}
                   cor={tipoInfo?.cor || "bg-gray-500"}
+                  linkEvidencia={linkIPFS}
+                  linkTx={linkTx}
                 />
               );
             })}
           </div>
         ) : (
           <div className="text-center py-12 bg-white rounded-xl shadow-sm">
-            <p className="text-gray-500 text-lg">🤝 Nenhuma ação registrada ainda</p>
+            <p className="text-gray-500 text-lg">🌱 Nenhuma ação registrada ainda</p>
             <p className="text-gray-400 text-sm mt-2">Seja o primeiro a registrar uma ação!</p>
           </div>
         )}
       </section>
 
-      {/* Relatório Trimestral */}
       <section className="bg-white py-12 border-t border-gray-200">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Relatório Trimestral</h2>
@@ -202,7 +202,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Tabela de Relatórios */}
       <section className="container mx-auto px-4 py-12">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Relatórios gerados</h2>
