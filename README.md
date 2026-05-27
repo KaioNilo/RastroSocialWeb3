@@ -121,25 +121,20 @@ Os financiadores podem consultar o histórico diretamente no explorador de bloco
 git clone https://github.com/seu-usuario/rastro-social.git
 cd rastro-social
 
-3. Configurar variáveis de ambiente
-Crie um arquivo .env na pasta frontend:
-VITE_CONTRACT_ADDRESS=0xC0dEF23D9E7347bdC029786271f51e925770a8C9
-Senha da carteira: 011235813213455
-
-4. Configurar o Smart Contract
+3. Configurar o Smart Contract
 cd contracts
 npm install
 npx hardhat compile
 
-5. Acessar a aplicação
-Frontend: http://localhost:5173
+4. Acessar a aplicação
+Frontend: rastro-social-web3.vercel.app
 
 Contrato na Sepolia: 0xC0dEF23D9E7347bdC029786271f51e925770a8C9
 
 🔗 Links Importantes
 Contrato na Sepolia	https://sepolia.etherscan.io/address/0xC0dEF23D9E7347bdC029786271f51e925770a8C9
 Carteira Autorizada (ONG)	0x6707e22489528Cc355892c5F5aC927C247ee6CF2
-Frontend (Vercel)	https://rastro-social.vercel.app
+Frontend (Vercel)	https://rastro-social-web3.vercel.app
 
 👥 Fluxo da Aplicação
 Área Pública (sem login - qualquer pessoa pode acessar)
@@ -177,9 +172,10 @@ Evidências materiais - Número de arquivos/IPFS registrados
 
 Relatórios trimestrais - Documentos oficiais gerados na blockchain
 
-🔐 Configuração de Acesso
+🔐 Configuração de Acesso 
 Apenas a carteira autorizada pode registrar ações e gerar relatórios:
 Endereço autorizado: 0x6707e22489528Cc355892c5F5aC927C247ee6CF2
+Senha: 011235813213455 (Disponibilizado para monitores conseguirem verificar ambas as páginas)
 
 Para adicionar novos membros da ONG, utilize a função adicionarAutorizado() no contrato.
 
