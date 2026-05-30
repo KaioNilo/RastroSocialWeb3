@@ -256,7 +256,7 @@ Carteira Autorizada (ONG):	0x6707e22489528Cc355892c5F5aC927C247ee6CF2
 Repositório GitHub:	github.com/KaioNilo/RastroSocialWeb3
 Documentação Completa:	PDF no repositório
 Vídeo de Demonstração da Aplicação: https://tomato-cautious-dog-601.mypinata.cloud/ipfs/bafybeiglrbhwuds6vb2ao6qzi76b4aplei2bu4ltnpijiao5fmz7cq3hme
-Vídeo do Pitch: https://tomato-cautious-dog-601.mypinata.cloud/ipfs/bafybeic25tu3p4d3t55rd2qobdokswofhc5btmkj2kazlkcujejakpm72a
+Vídeo do Pitch: https://youtu.be/hPufXkTz2-s
 Slide do Pitch: https://tomato-cautious-dog-601.mypinata.cloud/ipfs/bafybeifyibkzk7iop2xzn2z3m77rnr5mhrcjdil2on72qts2xmacirkige
 
 
